@@ -68,7 +68,6 @@ if(mysqli_num_rows($sql) > 0){
              } ?>
         </div>
         <h5 class="name friend-name"> <?php echo $row['username']." [ ".status($row)." ]"; ?></h5>
-          
         <div class="some-btn"> 
           <span class="glyphicon glyphicon-option-vertical option-btn"></span>
         </div>
@@ -162,8 +161,7 @@ if(mysqli_num_rows($sql) > 0){
                 if(xhr.readyState === XMLHttpRequest.DONE){
                     if(xhr.status === 200){
                       let data = xhr.response;
-                      chatBox.innerHTML = data;
-                      
+                      chatBox.innerHTML = data; 
                       if(!chatBox.classList.contains("active")){
                           scrollToBottom();
                         }
