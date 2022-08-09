@@ -1,180 +1,117 @@
+<?php
+session_start();
+include "../database/db_config.php";
+include "../auth/functions.php";
+
+check_session();
+
+if (isset($_POST['logout'])) {
+  logout($connectdb);
+}
+$unique_id =$_SESSION['session_token'];
+$user_chats_query = $db_connect -> query("SELECT * FROM users WHERE session_token!='$unique_id' order by id");
+$chats_query = $db_connect -> query("SELECT * FROM messages order by msg_id asc");
+$user_chats = $user_chats_query->fetchAll(PDO::FETCH_ASSOC);
+$chats = $chats_query->fetchAll(PDO::FETCH_ASSOC);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- echo name of logged in user -->
-  <title>Chat Room</title>
+  <title>Chat App</title>
   <link rel="stylesheet" href="bootstrap3.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="chat.css">
+  <style>
+
+    .app {
+    border: 3px solid #031426;
+    width: 100%;
+    margin: 2px auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(500px, calc(100vh - 100px));
+    }.creator {
+        margin-top: 35px;
+        text-align: center;
+        color: red;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    button{
+      background-color: #031426;
+      border-style: hidden;
+    }
+    .users {
+        background: #031426;
+        display: grid;
+        grid-template-rows: 1fr 6fr 1fr;
+        grid-auto-flow: row;
+    }
+    a{
+      margin-top: 0%;
+    }
+  </style>
 </head>
 <body>
-  <div id="app" class="app">
-
-    <!-- LEFT SECTION -->
-
-    <section id="main-left" class="main-left">
-      <!-- header -->
-      <div id="header-left" class="header-left">
-      <!-- <div id="self-info" class="self-info">
-      </div> -->
-      
-        <!-- photo -->
-        <div class="profile your-photo">
-          <img src="images/ava4.jpg" alt="">
-        </div>
-        <!-- name -->
-        <h4 class="name your-name">Iqbal Taufiq</h4>
-        <!-- setting btn -->
-        <!-- <span class="glyphicon glyphicon-cog"></span> -->
-        <!-- <span class="glyphicon glyphicon-menu-hamburger hamburger-btn"></span> -->
-        <span class="glyphicon glyphicon-search search-btn" style="padding-left:10%;">
-        <input type="text" style="border-radius: 20px;" hidden>
-        </span>
-        <span class="glyphicon glyphicon-option-vertical option-btn">
-          <ul hidden>
-            <li>hello</li>
-            <li>wewe</li>
-          </ul>
-        </span>
-      
-      </div>
-
-      <!-- chat list -->
-      <div id="chat-list" class="chat-list">
-        <!-- user lists -->
-        <div id="friends" class="friends">
-          <!-- photo -->
-          <div class="profile friends-photo">
-            <img src="images/ava2.jpg" alt="">
+<div id="app" class="app">
+  <section id="main-left" class="main-left" style="width:100%;">
+    <!-- <section id="main-left" class="users" style="width:100%;"> -->
+          <!-- header -->
+          <div class="search" id="header-left">
+            <div id="header-left" class="header-left">
+              <span class="glyphicon glyphicon-menu-hamburger hamburger-btn" style="padding-left:5%;margin-top: 10px;margin"></span>
+              <input type="text" value="<?php $_SESSION['session_token'] ?>" hidden>
+              <div class="search" style="margin-right: -500%;">
+                <input type="text" style="width:90%;margin-top: 15px; height: 30px;border-radius: 30px ;"placeholder="Search ...."> 
+              </div>
+              <button hidden><i class="glyphicon glyphicon-search search-btn"></i></button>  
+                <!-- <span class="" style="margin-left: 90%; margin-top: 10px;"></span> -->
+                <!-- <span class="glyphicon glyphicon-option-vertical option-btn"></span> -->
+              <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                <span>
+                  <button name="logout" type="submit"style="float: right; width:25%; margin-left:30px ; margin-top:18px; background-color: red; color:white; border-radius: 20px;">logout</button>
+                </span>
+                <input type="text" value="<?php echo $_SESSION['username'] ; ?>" hidden name="username">
+              </form>
+            </div> 
+            
           </div>
           
-          <div class="friends-credent">
-            <!-- name -->
-            <span class="friends-name">Mario Gomez</span>
-            <!-- last message -->
-            <span class="friends-message">Crap! I forgot my shoes. Can you bring extra pair for me?</span>
-          </div>
-          <!-- notification badge -->
-          <span class="badge notif-badge">7</span>
-        </div>
-
-        <div id="friends" class="friends">
-          <!-- photo -->
-          <div class="profile friends-photo">
-            <img src="images/ava3.jpg" alt="">
-          </div>
           
-          <div class="friends-credent">
+          <!-- chat list -->
+          <div id="chat-list" class="chat-list">
+            <!-- user lists -->
+            <!-- code in action/users.php -->
+          </div>
+
+          <!-- self-profile -->
+          <div id="self-info" class="self-info" style="">
+            <!-- photo -->
+            <div class="profile your-photo" style="float: left;">
+            <img src="<?php echo $_SESSION['image'] ?>" alt="" style="" >
+            </div>
             <!-- name -->
-            <span class="friends-name">Andre Silva</span>
-            <!-- last message -->
-            <span class="friends-message">How are you?</span>
+            <h4 class="name your-name"><?php echo $_SESSION['username']; ?></h4>
+            <!-- setting btn -->
+            <span class="glyphicon glyphicon-cog"></span>
           </div>
-          <!-- notification badge -->
-          <span class="badge notif-badge">999</span>
-        </div>
-      <!-- self-profile -->
-      
-    </section>
-
-    <!-- RIGHT SECTION -->
-    <section id="main-right" class="main-right">
-      <!-- header -->
-      <div id="header-right" class="header-right">
-        <!-- profile pict -->
-        <div id="header-img" class="profile header-img">
-          <img src="images/ava2.jpg" alt="">
-        </div>
-
-        <!-- name -->
-        <h4 class="name friend-name">Mario Gomez</h4>
-        <!-- some btn -->
-        <div class="some-btn">
-          <!-- <span class="glyphicon glyphicon-facetime-video"></span>
-          <span class="glyphicon glyphicon-earphone"></span> -->
-          <span class="glyphicon glyphicon-option-vertical option-btn"></span>
-        </div>
-      </div>
-
-      <!-- chat area -->
-      <div id="chat-area" class="chat-area">
-        <!-- chat content -->
-
-        <!-- FRIENDS CHAT TEMPLATE -->
-        <div id="friends-chat" class="friends-chat">
-          <div class="profile friends-chat-photo">
-            <img src="images/ava2.jpg" alt="">
-          </div>
-          <div class="friends-chat-content">
-            <p class="friends-chat-name">Mario Gomez</p>
-            <p class="friends-chat-balloon">Yo Dybala!</p>
-            <h5 class="chat-datetime">Sun, Aug 30 | 15:41</h5>
-          </div>
-        </div>
-
-       
-
-        <!-- FRIENDS CHAT TEMPLATE -->
-        <div id="friends-chat" class="friends-chat">
-          <div class="profile friends-chat-photo">
-            <img src="images/ava2.jpg" alt="">
-          </div>
-          <div class="friends-chat-content">
-            <p class="friends-chat-name">Mario Gomez</p>
-            <p class="friends-chat-balloon">Crap! I forgot my shoes. Can you bring extra pair for me?</p>
-            <h5 class="chat-datetime">Sun, Aug 30 | 15:41</h5>
-          </div>
-        </div>
-
-        <!-- YOUR CHAT TEMPLATE -->
-        <div id="your-chat" class="your-chat">
-          <p class="your-chat-balloon">sure m8</p>
-          <p class="chat-datetime"><span class="glyphicon glyphicon-ok"></span> Sun, Aug 30 | 15:45</p>
-        </div>
-
-        <!-- FRIENDS CHAT TEMPLATE -->
-        <div id="friends-chat" class="friends-chat">
-          <div class="profile friends-chat-photo">
-            <img src="images/ava2.jpg" alt="">
-          </div>
-          <div class="friends-chat-content">
-            <p class="friends-chat-name">Mario Gomez</p>
-            <p class="friends-chat-balloon">Thanks!</p>
-            <h5 class="chat-datetime">Sun, Aug 30 | 15:41</h5>
-          </div>
-        </div>
-
-
-      </div>
-
-      <!-- typing area -->
-      <div id="typing-area" class="typing-area" style="margin-left: 0px;"> 
-        <!-- input form -->
-        
-        <!-- attachment btn -->
-        <div class="attach-btn" style="float:left ; margin-left: 0px;">
-          <span class="glyphicon glyphicon-paperclip file-btn" style="margin-left: 0px;"></span>
-          <span class="glyphicon glyphicon-camera"></span>
-          <span class="glyphicon glyphicon-picture"></span>
-          <input id="type-area" class="type-area" size="30" placeholder="Type something..." style="border-color: green; border-style:double ;;">
-          <span class="glyphicon glyphicon-send send-btn" style="float: right;"></span>
-        </div>
-        <!-- send btn -->
-        
-      </div>
-    </section>
-  </div>
-
-  <div id="creator" class="creator">
-    &copy; <script>
+    <!-- </section>  -->
+  </section>
+</div>
+<div class="creator" id="creator" style="">
+        &copy; <script>
           document.getElementById('creator').appendChild(document.createTextNode(new Date().getFullYear()))
-        </script>, Designed by and Coded by :  <a href="#" target="_blank">lloyd Tony</a>
-  </div>
-
+        </script>, Designed by and Coded by :  <a href="#" target="_blank">lloyd Tony </a> && <a href="#" target="_blank">Profilin@dev</a>
+</div>
     <!-- jQuey, Popper, BootstrapJS -->
-    <script src="bootstrap3.3/js/jquery-3.3.1.min.js"></script>
-    <script src="bootstrap3.3/js/bootstrap.min.js"></script>
+<script src="bootstrap3.3/js/jquery-3.3.1.min.js"></script>
+<script src="bootstrap3.3/js/bootstrap.min.js"></script>
+<script src="../javascript/users.js"></script>
+<script>
+ 
+
+</script>
 </body>
 </html>

@@ -1,0 +1,28 @@
+  while ($row = mysqli_fetch_assoc($query) && $receiver_data = mysqli_fetch_assoc($query2)) {
+            if($row['outgoing_msg_id'] ===$outgoing_id ){
+                $output='
+                <div id="your-chat" class="your-chat">
+                <p class="your-chat-balloon">'.$row["msg"].'</p>
+                <p class="chat-datetime">
+                  <span class="glyphicon glyphicon-ok" style="color: green;"></span>
+                  <span style="color: green;" class="glyphicon glyphicon-ok"></span>
+                    '.$row['time_sent'].'
+                </p>
+              </div>';
+            }
+            elseif ($row['incoming_msg_id'] ===$incoming_id ) {
+                $output='
+                <div id="friends-chat" class="friends-chat">
+                <div class="profile friends-chat-photo">
+                  <img src="'.$receiver_data["image"].'" alt="">
+                </div>
+                <div class="friends-chat-content">
+                  <p class="friends-chat-name"> '.$receiver_data['username'].'</p>
+                  <p class="friends-chat-balloon"> '.$row['msg'].'</p>
+                  <h5 class="chat-datetime">
+                    '.$row['time_sent'].'
+                </div>
+              </div>  
+                ';
+            }
+        }

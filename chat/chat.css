@@ -1,11 +1,13 @@
 html, body {
     margin: 0;
     padding: 0;
+    background-color: #031426;
 }
+
 
 .app {
     border: 3px solid #031426;
-    width: 95%;
+    width: 100%;
     margin: 25px auto;
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -31,13 +33,19 @@ html, body {
     width: inherit;
 }
 
-.main-left {
+.main-left , #main-left , .users {
     background: #031426;
     display: grid;
-    /* grid-template-rows: 1fr 6fr 1fr;
-    grid-auto-flow: row; */
+    grid-template-rows: 1fr 6fr 1fr;
+    grid-auto-flow: row;
 }
-
+.users {
+    
+    background: #031426;
+    display: grid;
+    grid-template-rows: 1fr 6fr 1fr;
+    grid-auto-flow: row;
+}
 .header-left {
     /* border: 5px solid salmon; */
     padding: 10px;
@@ -56,7 +64,7 @@ html, body {
 }
 
 .hamburger-btn, .search-btn {
-    place-self: center end;
+    place-self: center start;
 }
 
 .option-btn {
@@ -185,7 +193,7 @@ html, body {
 
 .header-right {
     /* border: 5px solid greenyellow; */
-    padding: 5px;
+    /* padding: 5px; */
     background: white;
     display: grid;
     grid-auto-flow: column;
@@ -306,7 +314,7 @@ html, body {
     border-radius: 20px 20px 0px 20px; /* TL-TR-BR-BL*/
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
-    background: darkslateblue;
+    background: rgb(72, 66, 116);
     font-size: 0.9em;
 }
 
@@ -317,7 +325,7 @@ html, body {
 
 .typing-area {
     /* border: 5px solid goldenrod; */
-    background: white;
+    background: rgb(193, 210, 218);
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: 8fr 2fr 1fr;
@@ -326,7 +334,7 @@ html, body {
 }
 
 .type-area {
-    /* border: 5px solid blueviolet; */
+     border: -50px solid blueviolet;
     border: none;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     outline: none;
@@ -357,7 +365,7 @@ input::placeholder {
 }
 
 .attach-btn span {
-    margin: 0px 10px;
+    margin: 0px 1px;
 }
 
 .send-btn {
@@ -366,6 +374,7 @@ input::placeholder {
 }
 
 .creator {
+
     text-align: center;
     color: #777;
     font-family: 'Courier New', Courier, monospace;
