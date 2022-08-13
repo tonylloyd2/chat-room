@@ -9,10 +9,7 @@ if (isset($_POST['logout'])) {
   logout($connectdb);
 }
 $unique_id =$_SESSION['session_token'];
-$user_chats_query = $db_connect -> query("SELECT * FROM users WHERE session_token!='$unique_id' order by id");
-$chats_query = $db_connect -> query("SELECT * FROM messages order by msg_id asc");
-$user_chats = $user_chats_query->fetchAll(PDO::FETCH_ASSOC);
-$chats = $chats_query->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 <!DOCTYPE html>
@@ -24,6 +21,7 @@ $chats = $chats_query->fetchAll(PDO::FETCH_ASSOC);
   <title>Chat App</title>
   <link rel="stylesheet" href="bootstrap3.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="chat.css">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
   <style>
 
     .app {
@@ -61,9 +59,9 @@ $chats = $chats_query->fetchAll(PDO::FETCH_ASSOC);
           <!-- header -->
           <div class="search" id="header-left">
             <div id="header-left" class="header-left">
-              <span class="glyphicon glyphicon-menu-hamburger hamburger-btn" style="padding-left:5%;margin-top: 10px;margin"></span>
+              <span class="uil uil-bars glyphicon hamburger-btn" style="padding-left:50%;margin-top: 10px; "></span>
               <input type="text" value="<?php $_SESSION['session_token'] ?>" hidden>
-              <div class="search" style="margin-right: -500%;">
+              <div class="search" style="margin-right:-500%; margin-left:10px;">
                 <input type="text" style="width:90%;margin-top: 15px; height: 30px;border-radius: 30px ;"placeholder="Search ...."> 
               </div>
               <button hidden><i class="glyphicon glyphicon-search search-btn"></i></button>  
@@ -71,9 +69,10 @@ $chats = $chats_query->fetchAll(PDO::FETCH_ASSOC);
                 <!-- <span class="glyphicon glyphicon-option-vertical option-btn"></span> -->
               <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                 <span>
-                  <button name="logout" type="submit"style="float: right; width:25%; margin-left:30px ; margin-top:18px; background-color: red; color:white; border-radius: 20px;">logout</button>
+                  <button name="logout" type="submit"style="float: right; width:22% ;margin-top: 20px;
+                   height:25px; background-color: red; color:white; border-radius:20px;">logout</button>
                 </span>
-                <input type="text" value="<?php echo $_SESSION['username'] ; ?>" hidden name="username">
+                <input type="text" value="<?php echo $_SESSION['username'] ;?>" hidden name="username">
               </form>
             </div> 
             
@@ -95,7 +94,8 @@ $chats = $chats_query->fetchAll(PDO::FETCH_ASSOC);
             <!-- name -->
             <h4 class="name your-name"><?php echo $_SESSION['username']; ?></h4>
             <!-- setting btn -->
-            <span class="glyphicon glyphicon-cog"></span>
+            <i class="uil "></i>
+            <span class=" glyphicon uil-cog" style="margin-right:10px"></span>
           </div>
     <!-- </section>  -->
   </section>
@@ -106,6 +106,7 @@ $chats = $chats_query->fetchAll(PDO::FETCH_ASSOC);
         </script>, Designed by and Coded by :  <a href="#" target="_blank">lloyd Tony </a> && <a href="#" target="_blank">Profilin@dev</a>
 </div>
     <!-- jQuey, Popper, BootstrapJS -->
+
 <script src="bootstrap3.3/js/jquery-3.3.1.min.js"></script>
 <script src="bootstrap3.3/js/bootstrap.min.js"></script>
 <script src="../javascript/users.js"></script>

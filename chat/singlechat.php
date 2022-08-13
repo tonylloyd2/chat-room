@@ -21,6 +21,7 @@ if(mysqli_num_rows($sql) > 0){
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Chat App Template</title>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
   <link rel="stylesheet" href="bootstrap3.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="./chat.css">
   <style>
@@ -49,11 +50,12 @@ if(mysqli_num_rows($sql) > 0){
     <section id="main-right" class="main-right">
       <!-- header -->
       <div id="header-right" class="header-right">
-        <!-- profile picture -->
         
-        <div id="header-img" class="profile header-img">
-        <!-- <a href="chat.php" class="back-icon"><i class="fas fa-arrow-left">back</i></a> -->
-          <img src="<?php echo $row['image']; ?>" alt="">
+      
+        <!-- profile picture -->
+        <div id="header-img" class="profile header-img" style="">
+        <img src="../img/back.ico" height="20px" width="30px" alt="" style="padding-right: 0px; margin-left:0px">
+        <img src="<?php echo $row['image'] ?>" alt="" style="padding-right: -100px; margin-left:0px">
            <?php
            function status($row){ 
             $output = "";
@@ -66,6 +68,7 @@ if(mysqli_num_rows($sql) > 0){
               return $output;
              }
              } ?>
+           
         </div>
         <h5 class="name friend-name"> <?php echo $row['username']." [ ".status($row)." ]"; ?></h5>
         <div class="some-btn"> 
