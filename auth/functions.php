@@ -15,7 +15,6 @@ function random_id($length){
     return $rand_string;
   }
 function register($connectdb){
-
     $username = htmlspecialchars($_POST['username']);
     $fpassword = htmlspecialchars($_POST['fpassword']);
     $password = htmlspecialchars($_POST['spassword']);

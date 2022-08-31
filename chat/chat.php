@@ -20,7 +20,7 @@ $unique_id =$_SESSION['session_token'];
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Chat App</title>
   <link rel="stylesheet" href="bootstrap3.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="chat.css">
+  <link rel="stylesheet" href="./chat.css">
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
   <style>
 

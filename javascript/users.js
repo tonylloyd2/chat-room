@@ -45,8 +45,7 @@ setInterval(() =>{
             let data = xhr.response;
             if(!searchBar.classList.contains("active")){
               usersList.innerHTML = data;
-            }
-           
+            } 
           }
       }
     }

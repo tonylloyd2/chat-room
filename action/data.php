@@ -61,7 +61,7 @@ function nodata(){
            
             <div class="profile friends-photo">
               <img src="'. $row['image'] .'" alt=""
-               name="image"> 
+               name="image" style=""> 
           </div>
           <div class="friends-credent" style="">
             <!-- name -->

@@ -23,7 +23,7 @@ if(mysqli_num_rows($sql) > 0){
   <title>Chat App Template</title>
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
   <link rel="stylesheet" href="bootstrap3.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./chat.css">
+  <link rel="stylesheet" href="./singlechat.css">
   <style>
        .app {
     border: 3px solid #031426;
@@ -46,31 +46,53 @@ if(mysqli_num_rows($sql) > 0){
 <body>
     <!-- RIGHT SECTION -->
   <div id="app" class="app">
-    
     <section id="main-right" class="main-right">
       <!-- header -->
-      <div id="header-right" class="header-right">
-        
-      
-        <!-- profile picture -->
-        <div id="header-img" class="profile header-img" style="">
-        <img src="../img/back.ico" height="20px" width="30px" alt="" style="padding-right: 0px; margin-left:0px">
-        <img src="<?php echo $row['image'] ?>" alt="" style="padding-right: -100px; margin-left:0px">
-           <?php
-           function status($row){ 
-            $output = "";
-             if ($row['status'] == "offline") {
-              $output.=' <i  style="color:blueviolet;">'. $row['status'] .'</i> ';
-              return $output;
-             }
-             elseif($row['status'] == "online") {
-              $output.=' <i  style="color:green;">'. $row['status'] .'</i> ';
-              return $output;
-             }
-             } ?>
+      <div id="header-right" class="header-right"> 
+      <!-- profile picture -->
+        <div id="header-img" class="profile header-img" style="">  
+          <div class="back">
+            <a href="./chat.php">
+              <img src="../img/back.ico" height="20px" width="40px" alt="" >
+            </a>
+          </div>
+          <div class="image">  
+            <img src="<?php echo $row['image'] ?>"height="50px" width="100px" alt="" style="border-radius:50px;">
            
+          </div>
         </div>
-        <h5 class="name friend-name"> <?php echo $row['username']." [ ".status($row)." ]"; ?></h5>
+        <form action="" hidden class="main-form" method="post" style="margin-left: 30px;">
+            <input type="text" hidden  class="input"hidden value="<?php echo $user_id; ?>">
+        </form>
+        <div class="name friend-name">
+              
+        </div>
+        
+        <!-- js -->
+        <script>
+          const form1 = document.querySelector(".main-form"),
+          user_status = document.querySelector(".name"),
+          input = form1.querySelector(".header-right .input").value;
+          
+          
+          setInterval(() =>{
+                            let xhr = new XMLHttpRequest();
+                            xhr.open("POST", "../action/single_users.php", true);
+                            xhr.onload = ()=>{
+                              if(xhr.readyState === XMLHttpRequest.DONE){
+                                  if(xhr.status === 200){
+                                    let data = xhr.response;
+                                    // if(!user_status.classList.contains("active")){
+                                    user_status.innerHTML = data;
+                                    //  console.log(data);
+                                    // } 
+                                  }
+                              }
+                            }
+               xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              xhr.send("input="+input);
+          }, 500);
+        </script>
         <div class="some-btn"> 
           <span class="glyphicon glyphicon-option-vertical option-btn"></span>
         </div>
@@ -85,24 +107,17 @@ if(mysqli_num_rows($sql) > 0){
       </div>
         
       <!-- typing area -->
-    <form class="typing-area" id="typing-area" style="width: 100%; margin-right:20px ;background-color:white;"  enctype="multipart/form-data" name="typing-area" action="" autocomplete="off">
-        
-              <!-- send btn -->
-        <!-- <input type="text" name="outgoing_id" class="outgoing_id"  value="<?php 
-        // echo $_SESSION['session_token']; ?>"hidden  >-->
+    <form class="typing-area" id="typing-area" style=""  enctype="multipart/form-data" name="typing-area" action="" autocomplete="off">
         <input class="outgoing_id" type="text" name="incoming_id"   value="<?php echo $_SESSION['session_token']; ?>"hidden >
         <input class="incoming_id" type="text" name="incoming_id"   value="<?php echo $user_id; ?>"hidden >
         <input class="input-field"  type="text" name="message" placeholder="Type a message here 😊😊.." autocomplete="off">
-        <!-- <div class="attach-btn" style="border-style: 2px red;">
-           <span class="glyphicon glyphicon-paperclip file-btn"></span>
-        </div> -->
-        <button>
+        
+        <button id="send">
           <i class="glyphicon glyphicon-send send-btn" ></i>
         </button>
         
     </form>
     </section>
-    
   </div>
 <div class="creator" id="creator" style="">
         &copy;<script>
@@ -114,12 +129,14 @@ if(mysqli_num_rows($sql) > 0){
     <script src="bootstrap3.3/js/bootstrap.min.js"></script>
     <!-- <script src="../javascript/chat.js"></script> -->
     <script>
+          
+
           const form = document.querySelector(".typing-area"),
           incoming_id = form.querySelector(".typing-area .incoming_id").value,
           inputField = form.querySelector(".typing-area .input-field"),
           sendBtn = form.querySelector(".typing-area button");
           chatBox = document.querySelector(".chat-area");
-
+          
           form.onsubmit = (e)=>{
               e.preventDefault();
           }
@@ -132,7 +149,6 @@ if(mysqli_num_rows($sql) > 0){
                   sendBtn.classList.remove("active");
               }
           }
-
           sendBtn.onclick = ()=>{
               let xhr = new XMLHttpRequest();
               xhr.open("POST", "../action/send_chat.php", true);
@@ -173,7 +189,12 @@ if(mysqli_num_rows($sql) > 0){
               }
               xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
               xhr.send("incoming_id="+incoming_id);
-          }, 500);  
+              
+          }, 500); 
+  function scrollToBottom(){
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+ 
     </script>
 </body>
 </html>
