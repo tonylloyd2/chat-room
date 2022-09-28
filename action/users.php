@@ -7,10 +7,7 @@
     $output = "";
     if(mysqli_num_rows($query) == 0){
         include_once "./data.php";
-
         $output =nodata();
-        
-
     }elseif(mysqli_num_rows($query) > 0){
         include_once "data.php";
                   
